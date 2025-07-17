@@ -9,27 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="index.css" />
     <link rel="stylesheet" href="/index.css">
-
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-
-    <script>
-      // Firebase-Konfiguration
-      const firebaseConfig = {
-  apiKey: "AIzaSyAni0T5TFTjuZjFEFC_sh8cxgsme5iMiDM",
-  authDomain: "crete-f2354.firebaseapp.com",
-  projectId: "crete-f2354",
-  storageBucket: "crete-f2354.firebasestorage.app",
-  messagingSenderId: "709466530046",
-  appId: "1:709466530046:web:8e0e921b11b8d7617485af"
-      };
-
-      firebase.initializeApp(firebaseConfig);
-      const db = firebase.database();
-    </script>
   </head>
-
   <body>
     <main id="app">
       <h1>ΣΥΝΕΛΕΥΣΗ ΠΕΡΙΦΕΡΕΙΑΣ ΚΡΗΤΗ 2026</h1>
@@ -40,33 +20,51 @@
       </div>
     </main>
 
-    <script>
+    <!-- Firebase SDK -->
+    <script type="module">
+      // Import Firebase modules
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+      import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+      // Your Firebase config
+      const firebaseConfig = {
+        apiKey: "AIzaSyAni0T5TFTjuZjFEFC_sh8cxgsme5iMiDM",
+        authDomain: "crete-f2354.firebaseapp.com",
+        projectId: "crete-f2354",
+        storageBucket: "crete-f2354.firebasestorage.app",
+        messagingSenderId: "709466530046",
+        appId: "1:709466530046:web:8e0e921b11b8d7617485af"
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      // Reference to the collection
+      const namesCol = collection(db, "names");
+
+      // DOM elements
       const nameList = document.getElementById("name-list");
       const totalSum = document.getElementById("total-sum");
 
-      // Echtzeit-Listener für Firebase
-      db.ref("names").on("value", (snapshot) => {
-        const data = snapshot.val() || {};
-        nameList.innerHTML = "";
-        const names = Object.values(data);
-        names.forEach((entry) => {
+      // Listen for real-time updates
+      onSnapshot(namesCol, (snapshot) => {
+        nameList.innerHTML = ""; // Clear list
+        let count = 0;
+
+        snapshot.forEach(doc => {
+          const data = doc.data();
           const li = document.createElement("li");
-          li.textContent = entry.name;
+          li.textContent = data.name;
           nameList.appendChild(li);
+          count++;
         });
-        totalSum.textContent = names.length;
+
+        totalSum.textContent = count;
       });
-
-      // Funktion zum Hinzufügen eines Namens (kann später durch Formular o.Ä. ersetzt werden)
-      function addName(name) {
-        const newRef = db.ref("names").push();
-        newRef.set({ name });
-      }
-
-      // Beispiel: Test hinzufügen
-      // addName("Γιώργος");
     </script>
 
+    <!-- Dein bestehendes JavaScript/TypeScript -->
     <script src="index.js" defer></script>
     <script type="module" src="/index.tsx"></script>
   </body>
