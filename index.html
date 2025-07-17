@@ -8,108 +8,39 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="index.css" />
-    <link rel="stylesheet" href="/index.css">
-    
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+  <link rel="stylesheet" href="/index.css">
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+<script>
+  const firebaseConfig = {
+  apiKey: "AIzaSyAni0T5TFTjuZjFEFC_sh8cxgsme5iMiDM",
 
-    <script>
-      // Deine Firebase-Konfiguration hier einfügen
-      const firebaseConfig = {
-        apiKey: "DEINE_API_KEY",
-        authDomain: "DEIN_AUTH_DOMAIN",
-        databaseURL: "DEIN_DATABASE_URL",
-        projectId: "DEIN_PROJECT_ID",
-        storageBucket: "DEIN_STORAGE_BUCKET",
-        messagingSenderId: "DEIN_MESSAGING_SENDER_ID",
-        appId: "DEIN_APP_ID"
-      };
+  authDomain: "crete-f2354.firebaseapp.com",
 
-      // Firebase initialisieren
-      const app = firebase.initializeApp(firebaseConfig);
-      const database = firebase.database(app);
+  projectId: "crete-f2354",
 
-      // Referenzen zu Firebase-Daten
-      const nameListRef = database.ref('names/');
-      const totalSumRef = database.ref('total/');
+  storageBucket: "crete-f2354.firebasestorage.app",
 
-      // Überwacht die Namen und aktualisiert die Liste
-      nameListRef.on('value', (snapshot) => {
-        const names = snapshot.val();
-        const nameListElement = document.getElementById('name-list');
-        nameListElement.innerHTML = ''; // Bestehende Liste leeren
-        
-        // Füge alle Namen zur Liste hinzu
-        for (let key in names) {
-          const nameItem = document.createElement('li');
-          nameItem.textContent = names[key];
-          nameListElement.appendChild(nameItem);
-        }
-      });
+  messagingSenderId: "709466530046",
 
-      // Überwacht die Gesamtsumme und aktualisiert die Anzeige
-      totalSumRef.on('value', (snapshot) => {
-        const totalSum = snapshot.val();
-        const totalSumElement = document.getElementById('total-sum');
-        totalSumElement.textContent = totalSum;
-      });
+  appId: "1:709466530046:web:5ef0e91390edcc567485af"
 
-      // Funktion, um einen neuen Namen hinzuzufügen
-      function addName(name) {
-        const newNameRef = database.ref('names/').push();
-        newNameRef.set(name);
-      }
+  };
+  firebase.initializeApp(firebaseConfig);
+  const database = firebase.database();
+</script>
 
-      // Funktion, um die Gesamtsumme zu aktualisieren
-      function updateTotal(newTotal) {
-        database.ref('total/').set(newTotal);
-      }
-
-      // Fügt den Namen aus dem Eingabefeld hinzu
-      function addNameFromInput() {
-        const nameInput = document.getElementById('new-name');
-        const name = nameInput.value;
-        if (name) {
-          addName(name);
-          nameInput.value = ''; // Eingabefeld leeren
-        }
-      }
-
-      // Aktualisiert die Gesamtsumme aus dem Eingabefeld
-      function updateTotalFromInput() {
-        const totalInput = document.getElementById('new-total');
-        const newTotal = parseInt(totalInput.value, 10);
-        if (!isNaN(newTotal)) {
-          updateTotal(newTotal);
-          totalInput.value = ''; // Eingabefeld leeren
-        }
-      }
-    </script>
-  </head>
+</head>
   <body>
     <main id="app">
       <h1>ΣΥΝΕΛΕΥΣΗ ΠΕΡΙΦΕΡΕΙΑΣ ΚΡΗΤΗ 2026</h1>
-      
-      <!-- List of Names (Echtzeit-Daten aus Firebase) -->
       <ul id="name-list"></ul>
-
-      <!-- Gesamtsumme anzeigen -->
       <div id="total-container">
         <span>ΣΥΝΟΛΟ:</span>
         <span id="total-sum">0</span>
       </div>
-
-      <!-- Eingabeformular zum Hinzufügen eines neuen Namens -->
-      <input type="text" id="new-name" placeholder="Neuen Namen hinzufügen">
-      <button onclick="addNameFromInput()">Hinzufügen</button>
-
-      <!-- Eingabeformular zum Aktualisieren der Gesamtsumme -->
-      <input type="number" id="new-total" placeholder="Neue Gesamtsumme">
-      <button onclick="updateTotalFromInput()">Summe aktualisieren</button>
     </main>
-
     <script src="index.js" defer></script>
-    <script type="module" src="/index.tsx"></script>
-  </body>
+  <script type="module" src="/index.tsx"></script>
+</body>
 </html>
